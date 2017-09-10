@@ -31,11 +31,6 @@ public class UIManager : MonoBehaviour
         Debug.Log(post.text);
     }
 
-    // GUI描画用のメソッド
-    void OnGUI()
-    {
-        COD = GUI.TextArea(new Rect((Screen.width / 2) - (80 * 3), Screen.height / 2 - 200, 160 * 3, 150 * 3), COD, 100, style.textArea);
-    }
     // ボタンを押したときの処理
     void OnPushPostButton()
     {
