@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 public class UIManager : MonoBehaviour
 {
     string COD = "死因";
@@ -20,25 +21,29 @@ public class UIManager : MonoBehaviour
     string nameUrl = "http://a8tky9n.sakura.ne.jp/AsanoKill/GetName.php";
     // Twitter投稿用のリンク
     string twitterUrl = "http://a8tky9n.sakura.ne.jp/AsanoKill/tweettest.php";
-    string msg;
+    // 名前
+    string userName;
+
     [SerializeField]
     GUISkin style;
     [SerializeField]
     Dropdown nameList;
     [SerializeField]
     InputField nameText;
-    // データベースに載っている名前を更新する
-    void DataUpdate()
-    {
-
-    }
+    [SerializeField]
+    InputField CODText;
     // Twitterに送信するメソッド
     // PHPは?以下をすべて投稿するようになっているので注意！
     public IEnumerator post()
     {
-        // 変更予定
-        WWW post = new WWW(url+ "?" + COD);
+        // Twitter投稿
+        WWW post = new WWW(twitterUrl+ "?" + COD);
         yield return post;
+        // DB更新
+        WWW updateDB = new WWW(url + "?name=" + userName);
+        yield return updateDB;
+        // 死因DB更新
+        WWW updateCOD = new WWW(CoDUrl + "?name=" + userName + "&reason=" + CODText.text);
         Debug.Log(post.text);
     }
 
@@ -65,4 +70,32 @@ public class UIManager : MonoBehaviour
     {
         StartCoroutine("getName");
     }
+    // 名前が入力されたときに呼ぶメソッド
+    void OnNameEntered()
+    {
+        userName = nameText.text;
+    }
+
+    // 死因が入力されたときに呼ぶメソッド
+    void OnCODEntered()
+    {
+        if (CODText.text == null)
+        {
+            COD = "msg=あさのは" + userName + "にキルされました...";
+        }
+        else
+        {
+            COD = "msg=あさのは" + CODText.text+"によって"+userName+"にキルされました...";
+        }
+    }
+
+    // メソッドが2つに分かれるのが面倒だったので1つにまとめる
+    // OnEndEditからはこのメソッドを呼ぶ
+    public void TextChanged()
+    {
+        OnNameEntered();
+        OnCODEntered();
+        OnTextChanged();
+    }
+   
 }
