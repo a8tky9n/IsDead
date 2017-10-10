@@ -1,4 +1,5 @@
 <?php
+// 練習用
 // データベースに接続する
 try{
   $db = new PDO("sqlite:test.db");

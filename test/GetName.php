@@ -1,4 +1,5 @@
 <?php
+// Unityから叩いて名前を取得するスクリプト
 // データベースに接続する
 try{
   $db=new PDO("sqlite:killer.db");

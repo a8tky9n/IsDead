@@ -1,4 +1,5 @@
 <?php
+// キル履歴要のDBを作成してアップデートするスクリプト
 // データベースに接続する
 try{
   $db=new PDO("sqlite:killer.db");
